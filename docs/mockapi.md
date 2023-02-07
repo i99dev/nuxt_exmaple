@@ -89,12 +89,12 @@ and then, you can add new mock data in `users.json`.
   {
     "id": 1,
     "name": "John Doe",
-    "email": "
+    "email": "test1@test.com"
   },
   {
     "id": 2,
     "name": "Jane Doe",
-    "email": "
+    "email": "test2@test.com"
   }
 ]
 ```
