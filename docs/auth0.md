@@ -39,7 +39,7 @@ The code for the authentication flow is as follows:
 
 > pages/index.vue
     
-```js
+```html
 <template>
     <div>
         <h1>Home</h1>
@@ -51,4 +51,6 @@ The code for the authentication flow is as follows:
 
 </script>
 ```
+
+
 
