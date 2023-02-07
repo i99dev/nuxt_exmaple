@@ -51,3 +51,7 @@ We will use expressJS to create mock API server. and the folder structure is as 
 ```
 
 for more information, please refer to [mockApi](docs/mockapi.md)
+
+## 3. Authentication
+
+[Authentication Implementation](docs/auth0.md) 🏗️🚧
