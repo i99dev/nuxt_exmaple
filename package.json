@@ -5,9 +5,13 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "mock": "nodemon @api/index.js"
   },
   "devDependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "nodemon": "^2.0.20",
     "nuxt": "^3.1.2"
   },
   "dependencies": {

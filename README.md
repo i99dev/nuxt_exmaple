@@ -36,3 +36,18 @@ Nuxt3 generate static files in `dist` folder. and you can deploy it to any stati
 ## 1. Frontend Libraries (TailwindCSS, Bootstrap, etc)
 - [TailwindCSS](https://tailwindcss.com/)
 - [Doc](docs/tailwindcss.md)
+
+## 2. Mock API
+- [expressJS](https://expressjs.com/)
+
+We will use expressJS to create mock API server. and the folder structure is as follows.
+
+```bash
+.
+├── @api
+│   ├── index.js
+│   └── users.js
+└── package.json
+```
+
+for more information, please refer to [mockApi](docs/mockapi.md)
