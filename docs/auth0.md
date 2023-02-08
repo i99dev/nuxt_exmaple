@@ -207,3 +207,5 @@ export default defineNuxtRouteMiddleware((to, from) => {
 ```
 Our dashboard page will be protected by this middleware. and will be redirect to home page if user is not logged in.
 
+# Conclusion
+Now we have two pages and one middleware and One state management. Next Step we will start use Provider to login and get user info and token.
