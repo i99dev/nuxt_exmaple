@@ -44,28 +44,8 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   const { code } = req.body;
-  if (code) {
-    const { access_token, token_type, scope } = await fetch(
-      "https://github.com/login/oauth/access_token" +
-        new URLSearchParams({
-          client_id: process.env.GITHUB_CLIENT_ID,
-          client_secret: process.env.GITHUB_CLIENT_SECRET,
-          code,
-        }),
-      {
-        method: "POST",
-      }
-    );
-    res.status(200).json({
-      access_token,
-      token_type,
-      scope,
-    });
-  } else {
-    res.status(400).json({
-      error: "code is required",
-    });
-  }
+  consel.log(code)
+  res.send({ code });
 });
 
 module.exports = router;
@@ -140,19 +120,14 @@ When you try visit page and add after path query `?code=123456` you will get the
 ```bash
 $ yarn add -D @types/node
 ```
-
-- set env in the `nuxt.config.ts` file.
+- create `app.config.ts` on your nuxt root folder.
 
 ```js
-export default defineNuxtConfig({
-  runtimeConfig: {
-    public: {
-      apiBaseUrl: process.env.API_BASE_URL,
-    },
-    app: {},
-  },
+export default defineAppConfig({
+  apiBaseUrl: process.env.API_BASE_URL,
 });
 ```
+This will help us to get the `apiBaseUrl` env in the `useAppConfig` function.
 
 - set `.env` file.
 
@@ -167,16 +142,23 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const { code } = router.currentRoute.value.query
-
 if (code) {
-  const { data,pending, error, refresh } = await useFetch("/github",{
+  const { data,pending, error, refresh } = await useFetch("github",{
     method: "POST",
-    body: JSON.stringify({ code }),
-    baseURL: useAppConfig().apiBaseUrl,
+    body: {
+      code: code,
+    },
+    baseURL:useAppConfig().apiBaseUrl,
   });
-  if (data) {
-    console.log(data)
-  }
+  console.log("data", data)
 }
 </script>
 ```
+
+if  you try to visit the callback page  You will see on Your terminal the code. come on server side.
+
+![image](./assets/imgs/code_terminal.png)
+
+## 5. Nuxt3 MockApi
+
+every thing work fine now we need to add the real code to get the access token.

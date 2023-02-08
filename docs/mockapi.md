@@ -54,7 +54,10 @@ and then, you can add new api in `index.js`.
 ```js
 // @api/index.js
 const express = require('express');
+var bodyParser = require('body-parser')
+
 const app = express();
+app.use(bodyParser.json()); // support json encoded bodies
 const port = 3000;
 
 const users = require('./users');

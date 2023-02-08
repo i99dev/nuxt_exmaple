@@ -10,16 +10,13 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const { code } = router.currentRoute.value.query
 if (code) {
-  const { data,pending, error, refresh } = await useFetch("/github",{
+  const { data,pending, error, refresh } = await useFetch("github",{
     method: "POST",
-    body: JSON.stringify({ code }),
-    baseURL: useRuntimeConfig().public.apiBaseUrl,
+    body: {
+      code: code,
+    },
+    baseURL:useAppConfig().apiBaseUrl,
   });
-  if (data) {
-    console.log(data)
-  }
-  if (error) {
-    console.log(error)
-  }
+  console.log("data", data)
 }
 </script>
