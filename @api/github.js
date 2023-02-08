@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router()
 
 /**
  * for more information about github oauth
@@ -30,6 +30,8 @@ router.post("/github", async (req, res) => {
     });
   }
 });
+
+module.exports = router;
 
 /**
  * this APi still ned to be developed

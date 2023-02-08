@@ -67,6 +67,9 @@ router.post("/github", async (req, res) => {
     });
   }
 });
+
+module.exports = router;
+
 ```
 more info about the Github OAuth App [here](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps)
 
@@ -122,3 +125,10 @@ if (code) {
 
 when user press the provider login button, the Github OAuth App will redirect to the callback URL. and we can get the `code` from the URL query.
 
+When you try visit page and add after path query `?code=123456` you will get the access token.
+ 
+ ![image](./assets/imgs/auth_code.png)
+
+ acutally The code will get when the user press the provider login button and redirect to the callback URL.
+
+ but here for test and show you thats wee are do manually.

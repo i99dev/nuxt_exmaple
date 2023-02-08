@@ -11,6 +11,7 @@ const router = useRouter()
 const { code } = router.currentRoute.value.query
 
 if (code) {
+  console.log(code)
   const { data,pending, error, refresh } = await useFetch("http://localhost:3010/github",{
     method: "POST",
     body: JSON.stringify({ code }),
@@ -18,4 +19,5 @@ if (code) {
   if (data) {
     console.log(data)
   }
+}
 </script>
