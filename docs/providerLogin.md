@@ -1,4 +1,4 @@
-# provider Login 🚧
+# provider Login 🚧 under construction 🚧
 
 We will use Github as an example to implement the provider login.
 
@@ -22,22 +22,7 @@ We need to set the callback URL to the ngrok tunnel URL.
 
 ## 3. Nuxt3 setup
 
-### 3.1. Nuxt3 config
-
-We need to set the `client_id` and `client_secret` in the `nuxt.config.js` file.
-
-```js
-export default defineNuxtConfig({
-  // ...
-  publicRuntimeConfig: {
-    githubClientId: process.env.GITHUB_CLIENT_ID,
-    githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
-  },
-  // ...
-})
-```
-
-### 3.2. Nuxt3 env
+### 3.1. Nuxt3 env
 
 We need to set the `client_id` and `client_secret` in the `.env` file.
 
@@ -45,16 +30,69 @@ We need to set the `client_id` and `client_secret` in the `.env` file.
 GITHUB_CLIENT_ID=xxxxxxxxxxxxxxxxxxxx
 GITHUB_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
+we will use this env with our MockApi to get the access token but on real you will add this step to your backend.
 
-### 3.3. Nuxt3 Page
+### 3.2. Nuxt3 MockApi
+
+We need to create a MockApi to get the access token.
+
+- crete new route file on @api folder `github.js`
+
+```js
+router.post("/github", async (req, res) => {
+  const { code } = req.body;
+  if (code) {
+    const { access_token, token_type, scope } = await fetch({
+      method: "GET",
+      url: "https://github.com/login/oauth/access_token",
+      params: {
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_CLIENT_SECRET,
+        code: code,
+        redirect_uri: process.env.GITHUB_REDIRECT_URI,
+      },
+    });
+    res.status(200).json({
+      access_token,
+      token_type,
+      scope,
+    });
+  } else {
+    res.status(400).json({
+      error: "code is required",
+    });
+  }
+});
+```
+more info about the Github OAuth App [here](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps)
+
+Don't forget to add the github route to the `index.js` file.
+
+```js
+const express = require("express");
+const userRoutes = require("./user");
+const githubRoutes = require("./github");
+
+const app = express();
+const port = 3010;
+app.use("/user", userRoutes);
+app.use("/github", githubRoutes);
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
+```
+
+
+### 3.2. Nuxt3 Page
 
 We need to create a page to handle the provider login callback.
 
 ```bash
-$ touch pages/auth/callback.vue
+$ npx nuxt add page "auth/callback.vue"
 ```
 
-```vue
+```html
 <template>
   <div>
     <h1>Callback</h1>
@@ -67,7 +105,14 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const { code } = router.currentRoute.value.query
 
-console.log(code)
+if (code) {
+  const { data,pending, error, refresh } = await useFetch("http://localhost:3010/github",{
+    method: "POST",
+    body: JSON.stringify({ code }),
+  });
+  if (data) {
+    console.log(data)
+  }
 </script>
 ```
 

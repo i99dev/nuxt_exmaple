@@ -1,7 +1,7 @@
 // user.js
 const express = require('express')
-const jwt = require('jsonwebtoken')
 const router = express.Router()
+const jwt = require('jsonwebtoken')
 
 router.post('/login', (req, res) => {
   // Authenticate the user and generate a JWT
