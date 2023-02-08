@@ -1,8 +1,9 @@
-
-/**
- * This use for user information object
- * @returns {Ref} user
- */
 export const useUser = () => {
-  return ref()
+    const user = ref(null)
+    const token = ref(null)
+
+    return {
+        user,
+        token
+    }
 }

@@ -137,8 +137,6 @@ $ npx nuxi add composable user
 > composables/user.ts
 
 ```ts
-import { ref } from '@nuxtjs/composition-api'
-
 export const useUser = () => {
     const user = ref(null)
     const token = ref(null)
@@ -149,12 +147,13 @@ export const useUser = () => {
     }
 }
 ```
+we will use this to check if user is logged in or not and get user info and token.
 
 - add user and token to pages/index.vue
 
 > pages/index.vue
 
-```html
+<!-- ```html
 <template>
     <div class="flex flex-col items-center justify-center h-screen">
         <h1 class="text-4xl font-bold">Home</h1>
@@ -163,10 +162,10 @@ export const useUser = () => {
 </template>
 
 <script lang="ts" setup>
-const { user, token } = useUser()
+
 </script>
 
-```
+``` -->
 
 - add middleware auth to dashboard/index.vue
 
@@ -180,10 +179,13 @@ const { user, token } = useUser()
 </template>
 
 <script lang="ts" setup>
-middleware: 'auth'
+definePageMeta({
+  middleware: 'auth'
+})
 </script>
 
 ```
+This Page will be protected by middleware auth. and will be redirect to home page if user is not logged in.
 
 
 ## Middleware
@@ -195,5 +197,13 @@ middleware: 'auth'
 > middleware/auth.ts
 
 ```ts
-import { Middleware } from '@nuxt/types'
-import { useUser } from '~/composables/user'
+import { useUser } from "~~/composables/user"
+export default defineNuxtRouteMiddleware((to, from) => {
+    const { user } = useUser()
+    if (!user.value) {
+        return ("/")
+    }
+})
+```
+Our dashboard page will be protected by this middleware. and will be redirect to home page if user is not logged in.
+

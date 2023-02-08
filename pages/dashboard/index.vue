@@ -1,9 +1,11 @@
-<script lang="ts" setup></script>
-
 <template>
-  <div>
-    Page: foo
+  <div class="flex flex-col items-center justify-center h-screen">
+    <h1 class="text-4xl font-bold">Dashboard</h1>
   </div>
 </template>
 
-<style scoped></style>
+<script lang="ts" setup>
+definePageMeta({
+  middleware: "auth",
+});
+</script>
