@@ -42,7 +42,7 @@ We need to create a MockApi to get the access token.
 const express = require("express");
 const router = express.Router();
 
-router.post("/github", async (req, res) => {
+router.post("/", async (req, res) => {
   const { code } = req.body;
   if (code) {
     const { access_token, token_type, scope } = await fetch(
@@ -132,3 +132,51 @@ When you try visit page and add after path query `?code=123456` you will get the
  acutally The code will get when the user press the provider login button and redirect to the callback URL.
 
  but here for test and show you thats wee are do manually.
+
+## 4. Nuxt3 env
+
+- we need install the `@types/node` package to use the `process.env` in the `@nuxtjs/composition-api` package.
+
+```bash
+$ yarn add -D @types/node
+```
+
+- set env in the `nuxt.config.ts` file.
+
+```js
+export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.API_BASE_URL,
+    },
+    app: {},
+  },
+});
+```
+
+- set `.env` file.
+
+```bash
+API_BASE_URL=http://localhost:3010
+```
+- update the `useFetch` function to use the `process.env.API_BASE_URL` env on `pages/auth/callback.vue` file.
+
+```html
+<script lang="ts" setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const { code } = router.currentRoute.value.query
+
+if (code) {
+  const { data,pending, error, refresh } = await useFetch("/github",{
+    method: "POST",
+    body: JSON.stringify({ code }),
+    baseURL: useAppConfig().apiBaseUrl,
+  });
+  if (data) {
+    console.log(data)
+  }
+}
+</script>
+```

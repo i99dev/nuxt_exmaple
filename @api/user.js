@@ -3,7 +3,7 @@ const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 
-router.post('/login', (req, res) => {
+router.get('/', (req, res) => {
   // Authenticate the user and generate a JWT
   const { email, password } = req.body
   if (email === 'test@example.com' && password === 'password') {

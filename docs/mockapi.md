@@ -46,7 +46,6 @@ if you want add new api, you can add new file in `@api` folder.
 ├── @api
 │   ├── index.js
 │   ├── users.js
-│   └── posts.js
 └── package.json
 ```
 
@@ -59,10 +58,8 @@ const app = express();
 const port = 3000;
 
 const users = require('./users');
-const posts = require('./posts');
 
 app.use('/users', users);
-app.use('/posts', posts);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
