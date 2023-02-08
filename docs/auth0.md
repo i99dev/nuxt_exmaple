@@ -1,4 +1,4 @@
-# Authentication Implementation 🏗️🚧
+# Authentication Implementation
 
 ## Authentication
 
