@@ -39,19 +39,23 @@ We need to create a MockApi to get the access token.
 - crete new route file on @api folder `github.js`
 
 ```js
+const express = require("express");
+const router = express.Router();
+
 router.post("/github", async (req, res) => {
   const { code } = req.body;
   if (code) {
-    const { access_token, token_type, scope } = await fetch({
-      method: "GET",
-      url: "https://github.com/login/oauth/access_token",
-      params: {
-        client_id: process.env.GITHUB_CLIENT_ID,
-        client_secret: process.env.GITHUB_CLIENT_SECRET,
-        code: code,
-        redirect_uri: process.env.GITHUB_REDIRECT_URI,
-      },
-    });
+    const { access_token, token_type, scope } = await fetch(
+      "https://github.com/login/oauth/access_token" +
+        new URLSearchParams({
+          client_id: process.env.GITHUB_CLIENT_ID,
+          client_secret: process.env.GITHUB_CLIENT_SECRET,
+          code,
+        }),
+      {
+        method: "POST",
+      }
+    );
     res.status(200).json({
       access_token,
       token_type,
