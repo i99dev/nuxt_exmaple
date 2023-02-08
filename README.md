@@ -54,4 +54,8 @@ for more information, please refer to [mockApi](docs/mockapi.md)
 
 ## 3. Authentication
 
-[Authentication Implementation](docs/auth0.md) 🏗️🚧
+[Authentication Implementation](docs/auth0.md)
+
+## 4. Provider Login
+
+[Provider Login](docs/providerLogin.md)
