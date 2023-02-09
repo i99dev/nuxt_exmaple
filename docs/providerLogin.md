@@ -143,8 +143,6 @@ API_BASE_URL=http://localhost:3010
 
 ```html
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
-
 const router = useRouter()
 const { code } = router.currentRoute.value.query
 if (code) {
@@ -166,4 +164,109 @@ if  you try to visit the callback page  You will see on Your terminal the code. 
 
 ## 5. Nuxt3 MockApi
 
-every thing work fine now we need to add the real code to get the access token.
+- update the `github.js` file to get the access token.
+
+```js
+const express = require("express");
+const router = express.Router();
+const axios = require("axios");
+
+router.post("/", async (req, res) => {
+  const { code } = req.body;
+  const { data } = await axios.post(
+    "https://github.com/login/oauth/access_token",
+    {
+      client_id: process.env.GITHUB_CLIENT_ID,
+      client_secret: process.env.GITHUB_CLIENT_SECRET,
+      code,
+    },
+    {
+      headers: {
+        accept: "application/json",
+      },
+    }
+  );
+  res.send(data);
+});
+
+module.exports = router;
+
+```
+
+- update `user.js` file to get the user data.
+
+```js
+const express = require("express");
+const router = express.Router();
+const axios = require("axios");
+
+// add this route to get the user data
+router.get("/github", async (req, res) => {
+  const { authorization } = req.headers;
+  const { data } = await axios.get("https://api.github.com/user", {
+    headers: {
+      Authorization: authorization,
+    },
+  });
+  res.send(data);
+});
+
+module.exports = router;
+
+```
+
+
+## 6. Nuxt3 Page
+
+- update the `pages/auth/callback.vue` file to get the user data.
+
+```html
+<script lang="ts" setup>
+const router = useRouter()
+const { code } = router.currentRoute.value.query
+if (code) {
+  const { data,pending, error, refresh } = await useFetch("user/github",{
+    method: "POST",
+    body: {
+      code: code,
+    },
+    baseURL:useRuntimeConfig().apiBaseUrl,
+  });
+  if (data) {
+    const { data: userData } = await useFetch("user", {
+      headers: {
+        Authorization: `Bearer ${data.access_token}`,
+      },
+    });
+    console.log("userData", userData)
+  }
+}
+</script>
+```
+
+
+
+- update the `pages/index.vue`  Button to redirect to the callback page.
+
+```html
+<template>
+  <div>
+    <h1>Home</h1>
+    <button @click="login">Login</button>
+  </div>
+
+</template>
+
+<script lang="ts" setup>
+const login = () => {
+   window.location.href = `https://github.com/login/oauth/authorize?client_id=${env.GITHUB_CLIENT_ID}&redirect_uri=${env.GITHUB_redirect_url}&scope=read:user`;
+}
+</script>
+```
+
+now you can try to login with the provider and get the user data.
+
+# 7. State Management
+
+Next will save the user data in the state management.
+
