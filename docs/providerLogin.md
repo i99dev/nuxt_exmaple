@@ -225,7 +225,7 @@ module.exports = router;
 const router = useRouter()
 const { code } = router.currentRoute.value.query
 if (code) {
-  const { data,pending, error, refresh } = await useFetch("user/github",{
+  const { data,pending, error, refresh } = await useFetch("github",{
     method: "POST",
     body: {
       code: code,
@@ -233,7 +233,7 @@ if (code) {
     baseURL:useRuntimeConfig().apiBaseUrl,
   });
   if (data) {
-    const { data: userData } = await useFetch("user", {
+    const { data: userData } = await useFetch("user/github", {
       headers: {
         Authorization: `Bearer ${data.access_token}`,
       },
