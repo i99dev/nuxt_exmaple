@@ -1,3 +1,3 @@
 export default defineAppConfig({
-  apiBaseUrl: process.env.API_BASE_URL,
+  apiBaseUrl: process.env?.API_BASE_URL as string,
 });

@@ -120,14 +120,19 @@ When you try visit page and add after path query `?code=123456` you will get the
 ```bash
 $ yarn add -D @types/node
 ```
-- create `app.config.ts` on your nuxt root folder.
+- add to  `nuxt.config.ts` on your nuxt root folder.
 
 ```js
-export default defineAppConfig({
-  apiBaseUrl: process.env.API_BASE_URL,
+export default defineNuxtConfig({
+  runtimeConfig: {
+    public:{
+      apiBaseUrl: process.env?.API_BASE_URL as string,
+    }
+  },
 });
+
 ```
-This will help us to get the `apiBaseUrl` env in the `useAppConfig` function.
+This will help us to get the `apiBaseUrl` env in the `useRuntimeConfig` function.
 
 - set `.env` file.
 
@@ -148,7 +153,7 @@ if (code) {
     body: {
       code: code,
     },
-    baseURL:useAppConfig().apiBaseUrl,
+    baseURL:useRuntimeConfig().apiBaseUrl,
   });
   console.log("data", data)
 }

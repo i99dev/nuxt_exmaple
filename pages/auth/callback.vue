@@ -15,7 +15,7 @@ if (code) {
     body: {
       code: code,
     },
-    baseURL:useAppConfig().apiBaseUrl,
+    baseURL:useRuntimeConfig().apiBaseUrl,
   });
   console.log("data", data)
 }

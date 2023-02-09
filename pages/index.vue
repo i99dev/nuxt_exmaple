@@ -11,5 +11,8 @@
 </template>
 
 <script lang="ts" setup>
-
+const env = useRuntimeConfig()
+const login = () => {
+  window.location.href = `https://github.com/login/oauth/authorize?client_id=${env.GITHUB_CLIENT_ID}&redirect_uri=${env.GITHUB_redirect_url}&scope=read:user`;
+};
 </script>
